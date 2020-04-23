@@ -6,6 +6,6 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/1. Basic Practices/Scenes/PlaneDetection.unity
-    guid: fbe1f55344db9ff48a770fe4f5946f5d
+    path: Assets/1. Basic Practices/Scenes/GameObjectPlacementPlane.unity
+    guid: ead43f1da0601b146b14e03e237b0a13
   m_configObjects: {}
