@@ -6,6 +6,6 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/1. Basic Practices/Scenes/GameObjectPlacementPlane.unity
-    guid: ead43f1da0601b146b14e03e237b0a13
+    path: Assets/2. Gaze Interaction/Scenes/ARFoundationExampleGaze.unity
+    guid: 73f441ea990a0f348a5bf41862b78d93
   m_configObjects: {}
