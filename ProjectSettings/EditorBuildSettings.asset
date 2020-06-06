@@ -6,6 +6,8 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/2. Gaze Interaction/Scenes/ARFoundationExampleGaze.unity
-    guid: 73f441ea990a0f348a5bf41862b78d93
-  m_configObjects: {}
+    path: Assets/3. AR Coursera/Scenes/ARCoursera.unity
+    guid: 09807cb3205740141812a6ee3db3bf66
+  m_configObjects:
+    com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 78bd44882b6d5954b8610a6f2d017f0b,
+      type: 2}

@@ -6388,5 +6388,15 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 6247912936234572686, guid: a89a9edb2c60c9b4d843b543b545d81b,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.06
+      objectReference: {fileID: 0}
+    - target: {fileID: 6247912936234572686, guid: a89a9edb2c60c9b4d843b543b545d81b,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a89a9edb2c60c9b4d843b543b545d81b, type: 3}
