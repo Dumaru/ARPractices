@@ -24,10 +24,15 @@ public class ARLessons : MonoBehaviour
     Image refImage;
     HashSet<ARPlane> arPlanes = new HashSet<ARPlane>();
     HashSet<ARPointCloud> arPointClouds = new HashSet<ARPointCloud>();
-    int arPlanesCounter = 0;
-    int arPointCloudsCounter = 0;
     [SerializeField]
     GameObject robotPrefab;
+    [SerializeField]
+    Button fireButton;
+    RectTransform fireButtonRectTransform;
+    float halfButtonHeight;
+    float halfButtonWidth;
+    int arPlanesCounter = 0;
+    int arPointCloudsCounter = 0;
     GameObject robot;
     private Rigidbody robotRb;
     float avgBrightness;
@@ -44,6 +49,10 @@ public class ARLessons : MonoBehaviour
         arPlaneMnager.planesChanged += HandleARPlanesChangedEvent;
         arPointCloudManager.pointCloudsChanged += HandleARPointCloudsChangedEvent;
         arCameraManager.frameReceived += HandleFrameReceivedCallback;
+
+        fireButtonRectTransform = fireButton.GetComponent<RectTransform>();
+        halfButtonWidth = fireButtonRectTransform.rect.width / 2;
+        halfButtonHeight = fireButtonRectTransform.rect.height / 2;
     }
 
     private void HandleFrameReceivedCallback(ARCameraFrameEventArgs obj)
@@ -100,10 +109,20 @@ public class ARLessons : MonoBehaviour
     // Update is called once per frame. 
     void Update()
     {
-        if (Input.touchCount > 0 && !overButton)
+
+        if (Input.touchCount > 0)
         {
-            if (Input.GetTouch(0).phase == TouchPhase.Ended)
+            if (Input.GetTouch(0).position.x < fireButtonRectTransform.position.x + halfButtonWidth &&
+                Input.GetTouch(0).position.x > fireButtonRectTransform.position.x - halfButtonWidth &&
+                Input.GetTouch(0).position.y < fireButtonRectTransform.position.y + halfButtonHeight &&
+                Input.GetTouch(0).position.y > fireButtonRectTransform.position.y - halfButtonHeight
+            ) overButton = true;
+            else overButton = false;
+
+            Debug.Log("Rayo " + fireButtonRectTransform.rect.position.ToString() + " over button " + overButton);
+            if (Input.GetTouch(0).phase == TouchPhase.Ended && !overButton)
             {
+                Debug.Log("Rayo FIN >>>>>>>>>>>>>>>>>>>>>>");
                 Vector2 touchPos = Input.GetTouch(0).position;
                 List<ARRaycastHit> hitResults = new List<ARRaycastHit>();
                 if (arRaycastManager.Raycast(touchPos, hitResults, TrackableType.PlaneWithinBounds))
@@ -140,6 +159,7 @@ public class ARLessons : MonoBehaviour
 
     public void ShootBall()
     {
+        overButton = true;
         GameObject tempBall = Instantiate(ballPrefab, Camera.main.transform.position, Camera.main.transform.rotation);
         tempBall.GetComponent<Rigidbody>().AddForce(Camera.main.transform.forward * 5000, ForceMode.Force);
     }
