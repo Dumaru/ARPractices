@@ -19,6 +19,8 @@ public class ARLessons : MonoBehaviour
     [SerializeField]
     Light light;
     [SerializeField]
+    GameObject ballPrefab;
+    [SerializeField]
     Image refImage;
     HashSet<ARPlane> arPlanes = new HashSet<ARPlane>();
     HashSet<ARPointCloud> arPointClouds = new HashSet<ARPointCloud>();
@@ -27,9 +29,12 @@ public class ARLessons : MonoBehaviour
     [SerializeField]
     GameObject robotPrefab;
     GameObject robot;
+    private Rigidbody robotRb;
     float avgBrightness;
     float avgColorTemp;
     Color colorCorrection;
+    private bool overButton;
+
     private void Awake()
     {
         ARSession.stateChanged += HandleARSessionStateChanged;
@@ -95,7 +100,7 @@ public class ARLessons : MonoBehaviour
     // Update is called once per frame. 
     void Update()
     {
-        if (Input.touchCount > 0)
+        if (Input.touchCount > 0 && !overButton)
         {
             if (Input.GetTouch(0).phase == TouchPhase.Ended)
             {
@@ -107,11 +112,23 @@ public class ARLessons : MonoBehaviour
                     if (robot == null)
                     {
                         robot = Instantiate(robotPrefab, hitPose.position, hitPose.rotation);
+                        robotRb = robot.GetComponent<Rigidbody>();
+                        robotRb.isKinematic = true;
                     }
                     else
                     {
                         robot.transform.position = hitPose.position;
                         robot.transform.rotation = hitPose.rotation;
+                        robotRb.isKinematic = false;
+                        robotRb.velocity = Vector3.zero;
+                        robotRb.angularVelocity = Vector3.zero;
+                        Rigidbody[] rbChildren = robot.GetComponentsInChildren<Rigidbody>();
+                        foreach (Rigidbody rb in rbChildren)
+                        {
+                            rb.isKinematic = false;
+                            rb.velocity = Vector3.zero;
+                            rb.angularVelocity = Vector3.zero;
+                        }
                     }
                 }
 
@@ -119,6 +136,12 @@ public class ARLessons : MonoBehaviour
         }
 
         CorrectLight();
+    }
+
+    public void ShootBall()
+    {
+        GameObject tempBall = Instantiate(ballPrefab, Camera.main.transform.position, Camera.main.transform.rotation);
+        tempBall.GetComponent<Rigidbody>().AddForce(Camera.main.transform.forward * 5000, ForceMode.Force);
     }
 
     private void CorrectLight()
@@ -135,5 +158,15 @@ public class ARLessons : MonoBehaviour
         {
             refImage.color = colorCorrection;
         }
+    }
+
+
+    public void HandlePointerEnter()
+    {
+        this.overButton = true;
+    }
+    public void HandlePointerExit()
+    {
+        this.overButton = false;
     }
 }
